@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hitesh Vishwakarma — Full Stack Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --accent: #7b61ff;
+    --accent2: #00e5c8;
+    --text: #f0eff8;
+    --muted: #8884a8;
+    --border: rgba(123,97,255,0.18);
+    --radius: 14px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: .4;
+  }
+
+  /* ── GRADIENT ORBS ── */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: .18;
+  }
+  .orb-1 { width: 600px; height: 600px; background: var(--accent); top: -200px; right: -150px; }
+  .orb-2 { width: 500px; height: 500px; background: var(--accent2); bottom: 100px; left: -200px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 6%;
+    backdrop-filter: blur(20px);
+    background: rgba(10,10,15,0.7);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: #fff !important;
+    padding: 0.55rem 1.2rem;
+    border-radius: 8px;
+    font-size: 0.82rem !important;
+  }
+  .nav-cta:hover { background: #6b52e8; }
+
+  /* ── WRAPPER ── */
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 6%;
+  }
+
+  section { padding: 7rem 0; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 6rem;
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4rem;
+    align-items: center;
+    width: 100%;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 1.5rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1.5px;
+    background: var(--accent2);
+  }
+
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 6vw, 5.2rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title .grad {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.85rem 2rem;
+    border-radius: 10px;
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(123,97,255,0.35); }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    color: var(--text);
+    padding: 0.85rem 2rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: border-color .2s, background .2s;
+  }
+  .btn-outline:hover { border-color: var(--accent); background: rgba(123,97,255,0.06); }
+
+  .hero-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex-shrink: 0;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.8rem;
+    text-align: center;
+    min-width: 130px;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent2);
+    display: block;
+  }
+  .stat-lbl {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── SECTION HEADINGS ── */
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .section-desc {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 560px;
+    font-weight: 300;
+  }
+  .section-header { margin-bottom: 3.5rem; }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: var(--border); }
+
+  /* ── ABOUT ── */
+  #about .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .about-text p {
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    font-weight: 300;
+    font-size: 1.02rem;
+  }
+  .about-text p strong { color: var(--text); font-weight: 500; }
+
+  .info-grid {
+    display: grid;
+    gap: 1rem;
+  }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.9rem 1.2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .info-row .label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .info-row .value {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  /* ── SKILLS ── */
+  #skills { background: var(--surface); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .skill-category {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+  .skill-cat-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .skill-cat-title::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .skill-tag {
+    background: var(--surface);
+    color: var(--text);
+    padding: 0.35rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    border: 1px solid rgba(123,97,255,0.12);
+    font-weight: 400;
+  }
+  .skill-tag.hot {
+    background: rgba(123,97,255,0.12);
+    border-color: rgba(123,97,255,0.3);
+    color: #c4b8ff;
+  }
+
+  /* ── PROJECTS ── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.8rem;
+    transition: border-color .2s, transform .2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  .project-card:hover { border-color: rgba(123,97,255,0.4); transform: translateY(-3px); }
+  .project-card:hover::before { opacity: 1; }
+
+  .project-card.featured {
+    border-color: rgba(123,97,255,0.35);
+  }
+  .project-card.featured::before { opacity: 1; }
+
+  .project-badge {
+    display: inline-block;
+    background: rgba(0,229,200,0.1);
+    color: var(--accent2);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.28rem 0.7rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(0,229,200,0.2);
+  }
+  .project-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.01em;
+  }
+  .project-desc {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.3rem;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+  .project-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.3rem;
+  }
+  .project-stack span {
+    background: rgba(255,255,255,0.05);
+    color: var(--muted);
+    padding: 0.22rem 0.65rem;
+    border-radius: 5px;
+    font-size: 0.78rem;
+  }
+  .project-links { display: flex; gap: 0.75rem; }
+  .project-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.83rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: color .2s;
+  }
+  .project-link:hover { color: var(--accent2); }
+  .project-link svg { width: 14px; height: 14px; }
+
+  /* ── EXPERIENCE ── */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2.4rem;
+    top: 0.4rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 3px rgba(123,97,255,0.2);
+  }
+  .tl-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.4rem;
+  }
+  .tl-role {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .tl-date {
+    font-size: 0.8rem;
+    color: var(--accent2);
+    font-weight: 500;
+    white-space: nowrap;
+    padding: 0.25rem 0.7rem;
+    background: rgba(0,229,200,0.08);
+    border-radius: 6px;
+    border: 1px solid rgba(0,229,200,0.15);
+  }
+  .tl-company {
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 0.7rem;
+  }
+  .tl-desc {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+  .tl-desc li {
+    margin-bottom: 0.4rem;
+    padding-left: 0.5rem;
+    list-style: none;
+    position: relative;
+  }
+  .tl-desc li::before {
+    content: '→';
+    position: absolute;
+    left: -1rem;
+    color: var(--accent);
+    font-size: 0.8rem;
+  }
+
+  /* ── EDUCATION ── */
+  #education { background: var(--surface); }
+
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .edu-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.8rem;
+  }
+  .edu-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba(123,97,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.2rem;
+    font-size: 1.3rem;
+  }
+  .edu-degree {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  .edu-school { color: var(--accent); font-size: 0.88rem; font-weight: 500; margin-bottom: 0.4rem; }
+  .edu-year { color: var(--muted); font-size: 0.82rem; }
+
+  /* ── CERTIFICATIONS ── */
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .cert-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .cert-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent2);
+    flex-shrink: 0;
+    margin-top: 0.55rem;
+  }
+  .cert-name { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.2rem; }
+  .cert-org { font-size: 0.78rem; color: var(--muted); }
+
+  /* ── LANGUAGES ── */
+  .lang-pills { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .lang-pill {
+    padding: 0.6rem 1.4rem;
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    font-size: 0.88rem;
+    color: var(--text);
+    background: var(--surface);
+  }
+  .lang-pill span { color: var(--muted); font-size: 0.78rem; margin-left: 0.4rem; }
+
+  /* ── CONTACT ── */
+  #contact {
+    text-align: center;
+  }
+  #contact .section-desc { margin: 0 auto 2.5rem; }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: border-color .2s, background .2s;
+    background: var(--surface);
+  }
+  .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+  .contact-link svg { width: 18px; height: 18px; }
+
+  .email-display {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.4rem, 3vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .email-display:hover { color: var(--accent); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  footer p { color: var(--muted); font-size: 0.82rem; }
+
+  /* ── ANIMATION ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.7s ease forwards; }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.25s; }
+  .delay-3 { animation-delay: 0.4s; }
+  .delay-4 { animation-delay: 0.55s; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-stats { flex-direction: row; flex-wrap: wrap; }
+    .stat-card { flex: 1; min-width: 100px; }
+    #about .about-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#hero" class="nav-logo">HV<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact" class="nav-cta">Hire Me</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="wrapper">
+    <div class="hero-inner">
+      <div>
+        <p class="hero-eyebrow fade-up">Available for Freelance &amp; Full-Time</p>
+        <h1 class="hero-title fade-up delay-1">
+          Hitesh<br />
+          <span class="grad">Vishwakarma</span>
+        </h1>
+        <p class="hero-sub fade-up delay-2">
+          Full Stack Developer &amp; WordPress Expert. MCA graduate from Chandigarh University crafting scalable, high-quality digital solutions for 2+ years.
+        </p>
+        <div class="hero-actions fade-up delay-3">
+          <a href="#projects" class="btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 3l14 9-14 9V3z"/></svg>
+            View My Work
+          </a>
+          <a href="#contact" class="btn-outline">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+            Contact Me
+          </a>
+        </div>
+      </div>
+      <div class="hero-stats fade-up delay-4">
+        <div class="stat-card">
+          <span class="stat-num">2+</span>
+          <span class="stat-lbl">Years Exp.</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">8+</span>
+          <span class="stat-lbl">Projects</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">109K</span>
+          <span class="stat-lbl">Profile Views</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="wrapper">
+    <div class="section-header">
+      <p class="section-label">Who I Am</p>
+      <h2 class="section-title">Building things that matter</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>Hi! I'm <strong>Hitesh Vishwakarma</strong>, a Full Stack Developer based in <strong>Mumbai, India</strong>. I'm passionate about crafting high-quality, scalable digital solutions that make a real difference.</p>
+        <p>With <strong>2+ years of hands-on experience</strong> in web development, I specialize in WordPress, PHP, and modern frontend technologies. I've worked on diverse projects ranging from e-commerce platforms to blood donation networks.</p>
+        <p>Currently pursuing my <strong>MCA from Chandigarh University</strong>, I'm always exploring emerging technologies and looking for exciting freelance opportunities and full-time roles where I can push the boundaries of what's possible.</p>
+        <div style="margin-top: 1.5rem;">
+          <a href="https://www.linkedin.com/in/hitesh-vishwakarma-/" target="_blank" class="btn-outline" style="display:inline-flex; font-size:0.88rem; padding:0.65rem 1.4rem;">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            View LinkedIn
+          </a>
+        </div>
+      </div>
+      <div class="info-grid">
+        <div class="info-row">
+          <span class="label">📍 Location</span>
+          <span class="value">Mumbai, India</span>
+        </div>
+        <div class="info-row">
+          <span class="label">🎓 Education</span>
+          <span class="value">MCA — Chandigarh University</span>
+        </div>
+        <div class="info-row">
+          <span class="label">💼 Status</span>
+          <span class="value" style="color: var(--accent2);">Open to Work</span>
+        </div>
+        <div class="info-row">
+          <span class="label">🛠 Specialty</span>
+          <span class="value">WordPress &amp; PHP Dev</span>
+        </div>
+        <div class="info-row">
+          <span class="label">🌐 GitHub</span>
+          <span class="value"><a href="https://github.com/hiteshvish" target="_blank" style="color:var(--accent); text-decoration:none;">@HiteshVish</a></span>
+        </div>
+        <div class="info-row">
+          <span class="label">🗣 Languages</span>
+          <span class="value">Hindi, English</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ── -->
+<section id="skills">
+  <div class="wrapper">
+    <div class="section-header">
+      <p class="section-label">Technical Arsenal</p>
+      <h2 class="section-title">Skills &amp; Technologies</h2>
+      <p class="section-desc">Tools and technologies I use to build production-ready web experiences.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-category">
+        <div class="skill-cat-title">Frontend</div>
+        <div class="skill-tags">
+          <span class="skill-tag hot">HTML5</span>
+          <span class="skill-tag hot">CSS3</span>
+          <span class="skill-tag hot">JavaScript</span>
+          <span class="skill-tag">Bootstrap</span>
+          <span class="skill-tag">Responsive Design</span>
+          <span class="skill-tag">jQuery</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-title">Backend &amp; CMS</div>
+        <div class="skill-tags">
+          <span class="skill-tag hot">PHP</span>
+          <span class="skill-tag hot">WordPress</span>
+          <span class="skill-tag">MySQL</span>
+          <span class="skill-tag">WooCommerce</span>
+          <span class="skill-tag">REST API</span>
+          <span class="skill-tag">CRUD Operations</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-title">WordPress Expertise</div>
+        <div class="skill-tags">
+          <span class="skill-tag hot">Custom Themes</span>
+          <span class="skill-tag hot">Plugin Dev</span>
+          <span class="skill-tag">Elementor</span>
+          <span class="skill-tag">WP Customizer</span>
+          <span class="skill-tag">ACF</span>
+          <span class="skill-tag">Yoast SEO</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-title">Tools &amp; Platforms</div>
+        <div class="skill-tags">
+          <span class="skill-tag hot">Git &amp; GitHub</span>
+          <span class="skill-tag">VS Code</span>
+          <span class="skill-tag">cPanel / Hosting</span>
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">Postman</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-title">Other</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">Pygame</span>
+          <span class="skill-tag">SEO Basics</span>
+          <span class="skill-tag">E-Commerce</span>
+          <span class="skill-tag">Digital Marketing</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ── -->
+<section id="projects">
+  <div class="wrapper">
+    <div class="section-header">
+      <p class="section-label">My Work</p>
+      <h2 class="section-title">Featured Projects</h2>
+      <p class="section-desc">A selection of projects I've built — from client work to open-source experiments.</p>
+    </div>
+    <div class="projects-grid">
+
+      <div class="project-card featured">
+        <div class="project-badge">⭐ Featured</div>
+        <div class="project-name">Blood Alliance Platform</div>
+        <div class="project-desc">A peer-to-peer blood donation network connecting donors with recipients directly — no intermediary blood banks. Built to streamline the donation process and save lives.</div>
+        <div class="project-stack">
+          <span>HTML</span><span>CSS</span><span>JavaScript</span><span>GitHub Pages</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/HiteshVish/Blood_Alliance.github.in" target="_blank" class="project-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-badge">WordPress</div>
+        <div class="project-name">NDP Infotech — Custom WP</div>
+        <div class="project-desc">Custom WordPress website development for NDP Infotech, featuring tailored theme design, plugin integration, and performance optimization.</div>
+        <div class="project-stack">
+          <span>WordPress</span><span>PHP</span><span>CSS</span><span>WooCommerce</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="project-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Live Demo
+          </a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-badge">E-Commerce</div>
+        <div class="project-name">Big Bites — Property Selling</div>
+        <div class="project-desc">A modern real estate and property selling web platform with listing management, search filters, and lead capture functionality.</div>
+        <div class="project-stack">
+          <span>WordPress</span><span>PHP</span><span>MySQL</span><span>CSS</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="project-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Live Demo
+          </a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-badge">Blog</div>
+        <div class="project-name">Right Our Way — WP Blog</div>
+        <div class="project-desc">A feature-rich blogging platform built on WordPress with custom post types, categories, newsletter integration, and SEO optimization.</div>
+        <div class="project-stack">
+          <span>WordPress</span><span>PHP</span><span>Yoast SEO</span><span>CSS</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="project-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Live Demo
+          </a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-badge">E-Commerce</div>
+        <div class="project-name">Roamtroid — eCommerce</div>
+        <div class="project-desc">Full-featured e-commerce website with product catalogues, cart management, payment gateway integration, and order tracking built on WordPress/WooCommerce.</div>
+        <div class="project-stack">
+          <span>WordPress</span><span>WooCommerce</span><span>PHP</span><span>MySQL</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="project-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Live Demo
+          </a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-badge">Python / JS</div>
+        <div class="project-name">Snake Game</div>
+        <div class="project-desc">A classic snake arcade game recreated using JavaScript. Smooth controls, progressive difficulty, high score tracking and a clean retro UI.</div>
+        <div class="project-stack">
+          <span>JavaScript</span><span>HTML5</span><span>Canvas API</span><span>CSS</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/HiteshVish/SnakeGame.github.io" target="_blank" class="project-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-badge">E-Commerce</div>
+        <div class="project-name">Boys Shopping Website</div>
+        <div class="project-desc">A trendy fashion e-commerce website for men's clothing, accessories, and gadgets with product galleries, filters, and a modern shopping experience.</div>
+        <div class="project-stack">
+          <span>HTML</span><span>CSS</span><span>JavaScript</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/HiteshVish/Boys-Shopping-Website" target="_blank" class="project-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-badge">Finance</div>
+        <div class="project-name">Edelweiss Commerce Report</div>
+        <div class="project-desc">A commerce reporting and analytics web solution, providing data visualization and business intelligence features for e-commerce performance tracking.</div>
+        <div class="project-stack">
+          <span>PHP</span><span>MySQL</span><span>WordPress</span><span>CSS</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="project-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Live Demo
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ── -->
+<section id="experience" style="background: var(--surface);">
+  <div class="wrapper">
+    <div class="section-header">
+      <p class="section-label">Work History</p>
+      <h2 class="section-title">Experience</h2>
+    </div>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="tl-header">
+          <div class="tl-role">WordPress Developer (Freelance)</div>
+          <span class="tl-date">2022 — Present</span>
+        </div>
+        <div class="tl-company">Multiple Clients — Mumbai, India</div>
+        <ul class="tl-desc">
+          <li>Developed and deployed custom WordPress themes and plugins for 5+ client projects</li>
+          <li>Built WooCommerce e-commerce stores with payment gateway integrations</li>
+          <li>Optimized site speed, SEO, and Core Web Vitals for clients</li>
+          <li>Worked with clients across real estate, retail, and blogging niches</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-header">
+          <div class="tl-role">Web Development Intern</div>
+          <span class="tl-date">2023</span>
+        </div>
+        <div class="tl-company">NDP Infotech</div>
+        <ul class="tl-desc">
+          <li>Built custom WordPress websites for clients following design specifications</li>
+          <li>Integrated third-party APIs and plugins to extend website functionality</li>
+          <li>Collaborated with design and marketing teams for end-to-end delivery</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-header">
+          <div class="tl-role">Full Stack Developer (Project-based)</div>
+          <span class="tl-date">2022 — 2023</span>
+        </div>
+        <div class="tl-company">Blogging Mission / Various Projects</div>
+        <ul class="tl-desc">
+          <li>Built and maintained blogging and content management platforms</li>
+          <li>Designed and implemented user authentication and CRUD-based backend systems</li>
+          <li>Created responsive, mobile-first frontend experiences using HTML, CSS, and JavaScript</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── EDUCATION ── -->
+<section id="education">
+  <div class="wrapper">
+    <div class="section-header">
+      <p class="section-label">Academic Background</p>
+      <h2 class="section-title">Education</h2>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="edu-icon">🎓</div>
+        <div class="edu-degree">Master of Computer Applications (MCA)</div>
+        <div class="edu-school">Chandigarh University</div>
+        <div class="edu-year">2022 — Present</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-icon">📘</div>
+        <div class="edu-degree">Bachelor of Computer Applications (BCA)</div>
+        <div class="edu-school">University (Mumbai)</div>
+        <div class="edu-year">2019 — 2022</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CERTIFICATIONS ── -->
+<section id="certs" style="background: var(--surface);">
+  <div class="wrapper">
+    <div class="section-header">
+      <p class="section-label">Credentials</p>
+      <h2 class="section-title">Certifications &amp; Achievements</h2>
+    </div>
+    <div class="certs-grid">
+      <div class="cert-card">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">Full Stack Web Development</div>
+          <div class="cert-org">Online Certification</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">PHP &amp; MySQL Development</div>
+          <div class="cert-org">Online Certification</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">WordPress Theme Development</div>
+          <div class="cert-org">Online Certification</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">GitHub Pair Extraordinaire</div>
+          <div class="cert-org">GitHub Achievement</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">GitHub Pull Shark</div>
+          <div class="cert-org">GitHub Achievement</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-dot"></div>
+        <div>
+          <div class="cert-name">SEO Fundamentals</div>
+          <div class="cert-org">Digital Marketing Cert</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 3rem;">
+      <p class="section-label" style="margin-bottom: 1rem;">Languages</p>
+      <div class="lang-pills">
+        <div class="lang-pill">Hindi <span>Native</span></div>
+        <div class="lang-pill">English <span>Professional</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="wrapper">
+    <p class="section-label" style="text-align:center;">Get In Touch</p>
+    <h2 class="section-title" style="text-align:center;">Let's Build Something Together</h2>
+    <p class="section-desc" style="text-align:center; margin: 0 auto 2.5rem;">
+      Open to freelance projects, full-time roles, and exciting collaborations. Don't hesitate to reach out!
+    </p>
+
+    <div class="contact-links">
+      <a href="mailto:hiteshvishwakarma@email.com" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+        Email Me
+      </a>
+      <a href="https://www.linkedin.com/in/hitesh-vishwakarma-/" target="_blank" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://github.com/hiteshvish" target="_blank" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        GitHub
+      </a>
+    </div>
+
+    <div style="text-align:center;">
+      <a href="mailto:hiteshvishwakarma@email.com" class="email-display">hiteshvishwakarma@email.com</a>
+      <p style="margin-top: 0.5rem; font-size:0.82rem; color: var(--muted);">← Update this with your actual email address</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p>© 2025 Hitesh Vishwakarma. Built with ❤️ from Mumbai.</p>
+  <div style="display:flex; gap:1rem;">
+    <a href="https://github.com/hiteshvish" target="_blank" style="color:var(--muted); text-decoration:none; font-size:0.82rem;">GitHub</a>
+    <a href="https://www.linkedin.com/in/hitesh-vishwakarma-/" target="_blank" style="color:var(--muted); text-decoration:none; font-size:0.82rem;">LinkedIn</a>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.project-card, .skill-category, .edu-card, .cert-card, .timeline-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
